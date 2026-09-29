@@ -1,0 +1,104 @@
+class Contact4:
+        def __init__(self, name, phone, email):
+            self.name = name
+            self.phone = phone
+            self.email = email
+        def __str__(self):
+            return f"{self.name} - {self.phone} - {self.email}"
+
+import Contact4
+import json
+class ContactManager4:
+            def __init__(self, filename):
+                self.filename = filename
+                self.n = 1
+                try:
+                    with open(self.filename, 'r') as file16:
+                        jsonContent = json.load(file16)
+                        self.contacts = jsonContent
+                except (FileNotFoundError, json.JSONDecodeError):
+                    self.contacts = [ ]
+                if self.contacts:
+                    self.n = max(c["id"] for c in self.contacts) + 1
+                else:
+                    self.n = 1
+            def add_contact(self):
+                choiceName = input("What's The Name Of The New Contact?").lower().strip()
+                choicePhone = input("Then, What's The Phone Number?").lower().strip()
+                choiceEmail = input("Finally, Email?").lower().strip()
+                c = Contact4.Contact4(choiceName, choicePhone, choiceEmail)
+                dict1 = {"id": self.n, 'name': c.name, 'phone': c.phone, 'email': c.email}
+                self.contacts.append(dict1)
+                with open(self.filename, 'w') as file16:
+                        json.dump(self.contacts, file16)
+            def show_all(self):
+                    for c in self.contacts:
+                            print(c)
+            def search(self):
+                    found = False
+                    choiceMatch = input('Who Do You Wanna Search?').lower().strip()
+                    for c in self.contacts:
+                            if choiceMatch == c["name"]:
+                                    print(c)
+                                    found = True
+                    if not found:
+                        print('Not Found!')
+            def delete(self):
+                    found2 = False
+                    choiceDel = input(f"Who Do You Wanna Delete?").lower().strip()
+                    for c in self.contacts:
+                        if c["name"] == choiceDel:
+                            found2 = True
+                    self.contacts = [c for c in self.contacts if c["name"] != choiceDel]
+                    with open(self.filename, 'w') as file16:
+                        json.dump(self.contacts, file16)
+                    if not found2:
+                        print('Not Found!')
+
+>>> import ContactManager4
+... def main():
+...         while True:
+...             manager = ContactManager4.ContactManager4('contacts4.json')
+...             choice5 = input('Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit').lower().strip()
+...             if choice5 == 'add a contact' or choice5 == '1':
+...                 manager.add_contact()
+...             elif choice5 == 'show all' or choice5 == '2':
+...                 manager.show_all()
+...             elif choice5 == 'search' or choice5 == '3':
+...                 manager.search()
+...             elif choice5 == 'delete' or choice5 == '4':
+...                 manager.delete()
+...             elif choice5 == 'quit' or choice5 == '5':
+...                 print('Goodbye!')
+...                 break
+... if __name__ == '__main__':
+...         main()
+...Output:
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 1
+What's The Name Of The New Contact? Nate
+Then, What's The Phone Number? 1227
+Finally, Email? nate@gmail.com
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 2
+{'id': 1, 'name': 'nate', 'phone': '1227', 'email': 'nate@gmail.com'}
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 1
+What's The Name Of The New Contact? alex
+Then, What's The Phone Number? 1228
+Finally, Email? alex@gmail.com
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 2
+{'id': 1, 'name': 'nate', 'phone': '1227', 'email': 'nate@gmail.com'}
+{'id': 2, 'name': 'alex', 'phone': '1228', 'email': 'alex@gmail.com'}
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 3
+Who Do You Wanna Search? alex
+{'id': 2, 'name': 'alex', 'phone': '1228', 'email': 'alex@gmail.com'}
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 4
+Who Do You Wanna Delete? alex
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 2
+{'id': 1, 'name': 'nate', 'phone': '1227', 'email': 'nate@gmail.com'}
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 3
+Who Do You Wanna Search? bob
+Not Found!
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 4
+Who Do You Wanna Delete? bob
+Not Found!
+Welcome To Python ContactManager! 1 - Add A Contact, 2 - Show All, 3 - Search, 4 - Delete, 5 - Quit 5
+Goodbye!
